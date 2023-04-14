@@ -1,5 +1,5 @@
 # Ignore these files
-/src/stable-diffusion-webui/__pycache__
-/src/stable-diffusion-webui/outputs
-/src/stable-diffusion-webui/repositories
-/src/stable-diffusion-webui/venv
+**/__pycache__
+**/outputs
+**/repositories
+**/venv
