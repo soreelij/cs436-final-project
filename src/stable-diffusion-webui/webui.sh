@@ -4,7 +4,7 @@
 # change the variables in webui-user.sh instead #
 #################################################
 
-cd srcf/stable-diffusion-webui
+cd src/stable-diffusion-webui
 
 # If run from macOS, load defaults from webui-macos-env.sh
 if [[ "$OSTYPE" == "darwin"* ]]; then

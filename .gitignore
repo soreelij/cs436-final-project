@@ -4,3 +4,4 @@
 **/repositories
 **/venv
 *.ckpt
+.DS_Store
