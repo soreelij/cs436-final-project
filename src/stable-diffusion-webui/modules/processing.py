@@ -4,6 +4,7 @@ import os
 import sys
 import warnings
 
+import tensorflow as tf
 import torch
 import numpy as np
 from PIL import Image, ImageFilter, ImageOps
@@ -100,6 +101,13 @@ def txt2img_image_conditioning(sd_model, x, width, height):
         # Pretty sure we can just make this a 1x1 image since its not going to be used besides its batch size.
         return x.new_zeros(x.shape[0], 5, 1, 1, dtype=x.dtype, device=x.device)
 
+class SongProcessing:
+    def __init__(self, prompt: str = ""):
+        self.prompt: str = prompt
+        self.scripts: None
+
+    def returnTitle(self):
+        return "Title of the song will go here"
 
 class StableDiffusionProcessing:
     """
@@ -769,8 +777,6 @@ def old_hires_fix_first_pass_dimensions(width, height):
     height = math.ceil(scale * height / 64) * 64
 
     return width, height
-
-
 class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
     sampler = None
 

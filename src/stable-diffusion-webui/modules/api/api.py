@@ -17,7 +17,7 @@ from secrets import compare_digest
 import modules.shared as shared
 from modules import sd_samplers, deepbooru, sd_hijack, images, scripts, ui, postprocessing
 from modules.api.models import *
-from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img, process_images
+from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img, SongProcessing, process_images
 from modules.textual_inversion.textual_inversion import create_embedding, train_embedding
 from modules.textual_inversion.preprocess import preprocess
 from modules.hypernetworks.hypernetwork import create_hypernetwork, train_hypernetwork
@@ -197,6 +197,7 @@ class Api:
         self.add_api_route("/sdapi/v1/unload-checkpoint", self.unloadapi, methods=["POST"])
         self.add_api_route("/sdapi/v1/reload-checkpoint", self.reloadapi, methods=["POST"])
         self.add_api_route("/sdapi/v1/scripts", self.get_scripts_list, methods=["GET"], response_model=ScriptsList)
+        self.add_api_route("/textapi/v1/song", self.get_song, methods=["POST"], response_model=SongResponse)
 
         self.default_script_arg_txt2img = []
         self.default_script_arg_img2img = []
@@ -222,7 +223,7 @@ class Api:
         return script, script_idx
     
     def get_scripts_list(self):
-        t2ilist = [str(title.lower()) for title in scripts.scripts_txt2img.titles]
+        t2ilist = [str(title.lower()) for title in scripts.scripts_stxt2img.titles]
         i2ilist = [str(title.lower()) for title in scripts.scripts_img2img.titles]
 
         return ScriptsList(txt2img = t2ilist, img2img = i2ilist)  
@@ -233,6 +234,16 @@ class Api:
         
         script_idx = script_name_to_index(script_name, script_runner.scripts)
         return script_runner.scripts[script_idx]
+
+    def get_song(self, req: SongRequest):
+        script_runner = scripts.scripts_song
+
+        with self.queue_lock:
+            p = SongProcessing()
+            p.prompt = req.input
+            p.scripts = script_runner
+
+        return SongResponse(output=p.returnTitle())
 
     def init_default_script_args(self, script_runner):
         #find max idx from the scripts in runner and generate a none array to init script_args
