@@ -4,8 +4,35 @@ import {Bars} from 'react-loader-spinner';
 
 export default class ImageDisplay extends Component {
     state = {
-        image: null,
+        images: [],
         generating: false
+    }
+
+    requestImages = () => {
+        let self = this;
+
+        for (let i = 0; i < 3; i++) {
+            axios({
+                method: 'post',
+                url: 'http://127.0.0.1:7860/sdapi/v1/txt2img',
+                data: {
+                    "prompt": "the album cover for mormon missionaries",
+                    "steps": 20,
+                }
+            })
+            .then(function (response) {
+                console.log(response);
+                let rawImage = response.data.images[0];
+                self.setState({
+                    images: [...self.state.images, "data:image/png;base64," + rawImage]
+                }, () => {
+                    console.log("Image" + i + ": " + self.state.images[i])
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
     }
 
     handleClick = () => {
@@ -15,29 +42,7 @@ export default class ImageDisplay extends Component {
             generating: true
         });
 
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:7860/sdapi/v1/txt2img',
-            data: {
-                "prompt": "the album cover for mormon missionaries",
-                "steps": 1
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-                var rawImage = response.data.images[0];
-                self.setState({
-                    image: "data:image/png;base64," + rawImage,
-                    generating: false
-                }, () => {
-                    console.log("Image data: " + self.state.image)
-                })
-                console.log("rendering image...");
-
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        this.requestImages();
     }
 
     render() {
@@ -45,9 +50,17 @@ export default class ImageDisplay extends Component {
         return (
             <div>
                 <div className="row">
-                    { this.state.image ?
-                        <div>
-                            <img src={this.state.image}/>
+                    { this.state.images.length === 3 ?
+                        <div className="row">
+                            <div className="col-lg-4 col-md-4 col-xs-4">
+                                <img className="img-fluid" src={this.state.images[0]}/>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-xs-4">
+                                <img className="img-fluid" src={this.state.images[1]}/>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-xs-4">
+                                <img className="img-fluid" src={this.state.images[2]}/>
+                            </div>
                         </div> :
                         this.state.generating ?
                         <div>
@@ -73,7 +86,7 @@ export default class ImageDisplay extends Component {
                                 transform: "translate(-50%, -50%)"
                             }}
                             wrapperClass=""
-                            visible={!this.state.image && this.state.generating}
+                            visible={this.state.images.length !== 3 && this.state.generating}
                         />
                     </div>
                 </div>
