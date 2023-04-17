@@ -106,6 +106,7 @@ class SongProcessing:
         self.prompt: str = prompt
         self.scripts: None
 
+    # Add model loading and methods...
     def returnTitle(self):
         return "Title of the song will go here"
 
