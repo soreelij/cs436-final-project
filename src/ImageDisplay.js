@@ -1,42 +1,97 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {Bars} from 'react-loader-spinner';
 
 export default class ImageDisplay extends Component {
     state = {
-        image: null
+        images: [],
+        generating: false
+    }
+
+    requestImages = () => {
+        let self = this;
+
+        for (let i = 0; i < 3; i++) {
+            axios({
+                method: 'post',
+                url: 'http://127.0.0.1:7860/sdapi/v1/txt2img',
+                data: {
+                    "prompt": "the album cover for mormon missionaries",
+                    "steps": 20,
+                }
+            })
+            .then(function (response) {
+                console.log(response);
+                let rawImage = response.data.images[0];
+                self.setState({
+                    images: [...self.state.images, "data:image/png;base64," + rawImage]
+                }, () => {
+                    console.log("Image" + i + ": " + self.state.images[i])
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
     }
 
     handleClick = () => {
-        axios.post('http://127.0.0.1:7860/sdapi/v1/txt2img', {
-            "prompt": "the album cover for taylor swift riding a horse",
-            "steps": 1
-        })
-        .then(function (response) {
-          console.log(response);
-          var rawImage = response.data.images[0];
-          this.setState({
-              image: "data:image/png;base64," + rawImage
-          })
-          console.log("rendering image...");
-        })
-        .catch(function (error) {
-          console.log(error);
+        let self = this;
+
+        self.setState({
+            generating: true
         });
+
+        this.requestImages();
     }
 
     render() {
-        return(<div className="App">
-            <p>Let's see if we can't generate and display an image...</p>
-            <button onClick={() => this.handleClick() }>Generate image</button>
-            <br />
-            {this.image ?
+
+        return (
             <div>
-                <p>Here is the image:</p>
-                <img src={ this.image } />
-            </div> :
-            <p>No image data</p>
-            }
-        </div>)
+                <div className="row">
+                    { this.state.images.length === 3 ?
+                        <div className="row">
+                            <div className="col-lg-4 col-md-4 col-xs-4">
+                                <img className="img-fluid" src={this.state.images[0]}/>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-xs-4">
+                                <img className="img-fluid" src={this.state.images[1]}/>
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-xs-4">
+                                <img className="img-fluid" src={this.state.images[2]}/>
+                            </div>
+                        </div> :
+                        this.state.generating ?
+                        <div>
+                            <br />
+                            <br />
+                            <br />
+                        </div> :
+                        <div className="align-items-center justify-content-center">
+                            <p>Generate an album cover below...</p>
+                            <button onClick={() => this.handleClick()}>Generate image</button>
+                        </div>
+                    }
+                    <div className="col-md">
+                        <Bars
+                            height="50"
+                            width="50"
+                            color="#4fa94d"
+                            ariaLabel="bars-loading"
+                            wrapperStyle={{
+                                position: "fixed",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)"
+                            }}
+                            wrapperClass=""
+                            visible={this.state.images.length !== 3 && this.state.generating}
+                        />
+                    </div>
+                </div>
+            </div>
+        )
     }
-        
+
 }
