@@ -17,7 +17,7 @@ from secrets import compare_digest
 import modules.shared as shared
 from modules import sd_samplers, deepbooru, sd_hijack, images, scripts, ui, postprocessing
 from modules.api.models import *
-from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img, SongProcessing, process_images
+from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img, SongProcessing, process_images, AlbumProcessing
 from modules.textual_inversion.textual_inversion import create_embedding, train_embedding
 from modules.textual_inversion.preprocess import preprocess
 from modules.hypernetworks.hypernetwork import create_hypernetwork, train_hypernetwork
@@ -198,6 +198,7 @@ class Api:
         self.add_api_route("/sdapi/v1/reload-checkpoint", self.reloadapi, methods=["POST"])
         self.add_api_route("/sdapi/v1/scripts", self.get_scripts_list, methods=["GET"], response_model=ScriptsList)
         self.add_api_route("/textapi/v1/song", self.get_song, methods=["POST"], response_model=SongResponse)
+        self.add_api_route("/textapi/v1/album", self.get_album, methods=["POST"], response_model=AlbumResponse)
 
         self.default_script_arg_txt2img = []
         self.default_script_arg_img2img = []
@@ -244,6 +245,17 @@ class Api:
             p.scripts = script_runner
 
         return SongResponse(output=p.return_title(input=p.prompt))
+
+
+    def get_album(self, req: AlbumRequest):
+        script_runner = scripts.scripts_song
+
+        with self.queue_lock:
+            p = AlbumProcessing()
+            p.prompt = req.input
+            p.scripts = script_runner
+
+        return AlbumResponse(output=p.return_album_title(input=p.prompt))
 
     def init_default_script_args(self, script_runner):
         #find max idx from the scripts in runner and generate a none array to init script_args
