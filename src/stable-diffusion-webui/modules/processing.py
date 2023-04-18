@@ -12,6 +12,7 @@ import random
 import cv2
 from skimage import exposure
 from typing import Any, Dict, List, Optional
+import pickle
 
 import modules.sd_hijack
 from modules import devices, prompt_parser, masking, sd_samplers, lowvram, generation_parameters_copypaste, script_callbacks, extra_networks, sd_vae_approx, scripts
@@ -106,9 +107,86 @@ class SongProcessing:
         self.prompt: str = prompt
         self.scripts: None
 
-    # Add model loading and methods...
-    def returnTitle(self):
-        return "Title of the song will go here"
+    global vocab_size
+    vocab_size = 476
+    global embedding_dim
+    embedding_dim = 100
+    global rnn_units
+    rnn_units = 100
+
+    def build_model(self, vocab_size, embedding_dim, rnn_units, batch_size):
+        model = tf.keras.Sequential([
+            tf.keras.layers.Embedding(vocab_size, embedding_dim,
+                                      batch_input_shape=[batch_size, None]),
+            tf.keras.layers.GRU(rnn_units,
+                                return_sequences=True,
+                                stateful=True,
+                                recurrent_initializer='glorot_uniform'),
+            tf.keras.layers.Dense(vocab_size)
+        ])
+        return model
+
+    def generate_text(self, start_string, t):
+
+        text = ""
+
+        with open('/Users/elijahsorensen/Developer/CS436/cs436-final-project/src/stable-diffusion-webui/models/text/songs_model/text.pkl', 'rb') as file:
+            text = pickle.load(file)
+
+        vocab = sorted(set(text))
+
+        char2idx = {u:i for i, u in enumerate(vocab)}
+        idx2char = np.array(vocab)
+
+        model = self.build_model(
+            vocab_size=476,
+            embedding_dim=100,
+            rnn_units=100,
+            batch_size=10)
+
+        model = self.build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
+
+        model.load_weights(tf.train.latest_checkpoint("/Users/elijahsorensen/Developer/CS436/cs436-final-project/src/stable-diffusion-webui/models/text/songs_model"))
+
+        model.build(tf.TensorShape([1, None]))
+
+        # Evaluation step (generating text using the learned model)
+
+        # Number of characters to generate
+        num_generate = 20
+
+        # Converting our start string to numbers (vectorizing)
+        input_eval = [char2idx[s] for s in start_string]
+        input_eval = tf.expand_dims(input_eval, 0)
+
+        # Empty string to store our results
+        text_generated = []
+
+        # Low temperature results in more predictable text.
+        # Higher temperature results in more surprising text.
+        # Experiment to find the best setting.
+        temperature = t
+
+        # Here batch size == 1
+        model.reset_states()
+        for i in range(num_generate):
+            predictions = model(input_eval)
+            # remove the batch dimension
+            predictions = tf.squeeze(predictions, 0)
+
+            # using a categorical distribution to predict the character returned by the model
+            predictions = predictions / temperature
+            predicted_id = tf.random.categorical(predictions, num_samples=1)[-1,0].numpy()
+
+            # Pass the predicted character as the next input to the model
+            # along with the previous hidden state
+            input_eval = tf.expand_dims([predicted_id], 0)
+
+            text_generated.append(idx2char[predicted_id])
+
+        return (start_string + ''.join(text_generated))
+    def return_title(self, input):
+        return self.generate_text(start_string=input, t=0.4)
 
 class StableDiffusionProcessing:
     """

@@ -243,7 +243,7 @@ class Api:
             p.prompt = req.input
             p.scripts = script_runner
 
-        return SongResponse(output=p.returnTitle())
+        return SongResponse(output=p.return_title(input=p.prompt))
 
     def init_default_script_args(self, script_runner):
         #find max idx from the scripts in runner and generate a none array to init script_args
