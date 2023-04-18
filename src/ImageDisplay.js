@@ -17,7 +17,7 @@ export default class ImageDisplay extends Component {
                 url: 'http://127.0.0.1:7860/sdapi/v1/txt2img',
                 data: {
                     "prompt": "the album cover for mormon missionaries",
-                    "steps": 20,
+                    "steps": 1,
                 }
             })
             .then(function (response) {
@@ -46,7 +46,6 @@ export default class ImageDisplay extends Component {
     }
 
     render() {
-
         return (
             <div>
                 <div className="row">
@@ -69,7 +68,6 @@ export default class ImageDisplay extends Component {
                             <br />
                         </div> :
                         <div className="align-items-center justify-content-center">
-                            <p>Generate an album cover below...</p>
                             <button onClick={() => this.handleClick()}>Generate image</button>
                         </div>
                     }

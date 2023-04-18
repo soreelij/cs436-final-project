@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import {TypeAnimation} from "react-type-animation";
+import { TypeAnimation } from "react-type-animation";
+import TimedComponent from './TimedComponent';
+import AlbumForm from "./AlbumForm";
 
 export default class AlbumOnboarder extends Component {
+
+
     state = {
-        renderView: 0
+        renderView: 0,
+        title: ""
     }
-    
+
     clickBtn = e => {
         this.setState({
             renderView: this.state.renderView += 1
@@ -16,13 +21,25 @@ export default class AlbumOnboarder extends Component {
         switch(this.state.renderView) {
             case 1:
                 return <div>
-                    <TypeAnimation
-                        cursor={false}
-                        sequence={["Hey bestie!", 750,
-                                   "My name is AlgoRhthym. Let's make music together.", 1500,
-                                   "First, I'll need you to input a song ", 1500]}
-                        wrapper="p"
-                        className="type"
+                    <br />
+                    {/*<TypeAnimation*/}
+                    {/*    cursor={false}*/}
+                    {/*    sequence={["Hi, I'm AlgoRhythm.", 600,*/}
+                    {/*               "We can make AI albums together (audio not included).", 750,*/}
+                    {/*               "To start, we need to choose a title.", 800,*/}
+                    {/*               "In one word, what should our album be about?", 1500]}*/}
+                    {/*    wrapper="p"*/}
+                    {/*    className="type"*/}
+                    {/*    deletionSpeed="99"*/}
+                    {/*/>*/}
+                    <TimedComponent
+                        element={
+                            <div>
+                                <AlbumForm />
+                            </div>
+                        }
+//                        timeout="16000"
+                        timeout="0"
                     />
                 </div>      
             default:
