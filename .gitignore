@@ -7,5 +7,4 @@
 .DS_Store
 .ipynb_checkpoints
 **/node_modules
-webui-user.sh
-
+src/stable-diffusion-webui/webui-user.sh

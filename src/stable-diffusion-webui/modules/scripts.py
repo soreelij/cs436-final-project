@@ -502,6 +502,7 @@ class ScriptRunner:
 scripts_txt2img = ScriptRunner()
 scripts_img2img = ScriptRunner()
 scripts_song = ScriptRunner()
+scripts_album = ScriptRunner()
 scripts_postproc = scripts_postprocessing.ScriptPostprocessingRunner()
 scripts_current: ScriptRunner = None
 

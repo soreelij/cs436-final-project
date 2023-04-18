@@ -14,6 +14,8 @@ from skimage import exposure
 from typing import Any, Dict, List, Optional
 import pickle
 
+from modules.text.album_title import *
+
 import modules.sd_hijack
 from modules import devices, prompt_parser, masking, sd_samplers, lowvram, generation_parameters_copypaste, script_callbacks, extra_networks, sd_vae_approx, scripts
 from modules.sd_hijack import model_hijack
@@ -190,6 +192,18 @@ class SongProcessing:
         return (start_string + ''.join(text_generated))
     def return_title(self, input):
         return self.generate_text(start_string=input, t=0.4)
+
+
+class AlbumProcessing:
+    def __init__(self, prompt: str = ""):
+        self.prompt: str = prompt
+        self.scripts: None
+
+        global modelz
+        modelz = get_model()
+
+    def return_album_title(self, phrase):
+        return get_5_albums(modelz, phrase, 0.3).tolist()
 
 class StableDiffusionProcessing:
     """

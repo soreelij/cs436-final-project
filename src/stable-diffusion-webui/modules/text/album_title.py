@@ -18,6 +18,7 @@ import nltk.stem.snowball as stem
 
 # Checking if a word is in the English Dictionary
 import enchant
+
 d = enchant.Dict("en_US")
 
 from random import randrange
@@ -30,7 +31,10 @@ charIndex = {}
 indexChar = {}
 
 def get_model():
-    album_name = pd.read_csv('album_text.csv')
+    __location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+    album_name = pd.read_csv(os.path.join(__location__, 'album_text.csv'))
     album_name = album_name.set_index('Unnamed: 0')
     album_name.dropna(inplace=True)
 
@@ -137,7 +141,7 @@ def get_model():
 
     model.compile(optimizer='adam', loss=loss,run_eagerly=True)
     # Directory where the checkpoints will be saved
-    checkpoint_dir = './training_checkpoints'
+    checkpoint_dir = 'training_checkpoints'
     # Name of the checkpoint files
     checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
 
@@ -147,7 +151,7 @@ def get_model():
 
     model = build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
 
-    model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
+    model.load_weights(tf.train.latest_checkpoint(os.path.join(__location__, checkpoint_dir)))
 
     model.build(tf.TensorShape([1, None]))
     return model
@@ -189,15 +193,18 @@ def generate_text(model, start_string,t):
 
 
 
-def get_5_ablums(model, phrase, tempz):
+def get_5_albums(model, phrase, tempz):
+    __location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
     phrase = phrase.lower()
     # Gets top 10,000 most common words (filters out subtle words that are not in english)
-    _20k = pd.read_csv('10k.txt',delimiter='\t', names=['word','la'])
+    _20k = pd.read_csv(os.path.join(__location__, '10k.txt'), delimiter='\t', names=['word','la'])
     _20k = _20k.drop(columns=['la'])
     relevant = _20k['word'].tolist()
     _20k.head(5)
 
-    top_20z = pd.read_csv('top_tags.csv')
+    top_20z = pd.read_csv(os.path.join(__location__, 'top_tags.csv'))
     top_20z.head(5)
     top_20 = top_20z['Top Tags']
     top_20 = top_20.tolist()
@@ -352,7 +359,7 @@ def main():
     model = get_model()
     print()
     print()
-    print(get_5_ablums(model,'classical', 0.3))
+    print(get_5_albums(model, 'classical', 0.3))
     print()
     print()
 
