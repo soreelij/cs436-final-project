@@ -130,9 +130,12 @@ class SongProcessing:
 
     def generate_text(self, start_string, t):
 
+        __location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
         text = ""
 
-        with open('/Users/elijahsorensen/Developer/CS436/cs436-final-project/src/stable-diffusion-webui/models/text/songs_model/text.pkl', 'rb') as file:
+        with open(os.path.join( os.path.abspath(os.path.join(__location__, os.pardir)), 'models/text/songs_model/text.pkl'), 'rb') as file:
             text = pickle.load(file)
 
         vocab = sorted(set(text))

@@ -6,7 +6,8 @@ https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/5461
 
 ## Running the project:
 
-`yarn prep` for starting the api
+**Pyenchant for Apple Silicon:**
+https://github.com/pyenchant/pyenchant/issues/265
 
 **In a separate Terminal..**
 `yarn start` for starting the project
