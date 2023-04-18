@@ -40,7 +40,7 @@ export default class AlbumForm extends React.Component {
         
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:7861/textapi/v1/album',
+            url: 'http://127.0.0.1:7860/textapi/v1/album',
             data: {
                 "input": self.state.albumTitle
             }
