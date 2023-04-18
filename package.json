@@ -16,7 +16,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "prep": "python $PWD/src/stable-diffusion-webui/launch.py  --skip-torch-cuda-test --no-half --use-cpu all --api",
+    "prep": "$PWD/src/stable-diffusion-webui/backend-start.sh",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
