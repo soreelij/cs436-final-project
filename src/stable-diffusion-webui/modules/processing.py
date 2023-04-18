@@ -14,7 +14,7 @@ from skimage import exposure
 from typing import Any, Dict, List, Optional
 import pickle
 
-from text.album_title import * 
+from modules.text.album_title import *
 
 import modules.sd_hijack
 from modules import devices, prompt_parser, masking, sd_samplers, lowvram, generation_parameters_copypaste, script_callbacks, extra_networks, sd_vae_approx, scripts
@@ -200,12 +200,7 @@ class AlbumProcessing:
         modelz = get_model()
 
     def return_album_title(self, phrase):
-        return get_5_ablums(modelz, phrase, 0.3)
-
-
-
-
-
+        return get_5_albums(modelz, phrase, 0.3).tolist()
 
 class StableDiffusionProcessing:
     """
