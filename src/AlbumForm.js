@@ -3,14 +3,15 @@ import axios from 'axios';
 export default class AlbumForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {                
-            albumTitle: '',
+        this.state = {
+            albumTitle: "",
             albums: [],
-            generating: false
+            generating: false,
+            titleSelected: false
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.clickBtn = this.clickBtn.bind(this);
+        this.clickGenerateBtn = this.clickGenerateBtn.bind(this);
 
     }
 
@@ -20,7 +21,7 @@ export default class AlbumForm extends React.Component {
         })
     }
     
-    clickBtn() {
+    clickGenerateBtn() {
         let self = this;
         
         const regexp = /^\S*$/; 
@@ -28,11 +29,9 @@ export default class AlbumForm extends React.Component {
 
         if (!regexp.test(albumTitle) || albumTitle === '') {
             // Do nothing if whitespace still entered;
-            console.log("invalid input, aborting");
+            console.log("invalid input, aborting.");
             return;
         }
-        
-        console.log("Clicked!");
         
         self.setState({
             generating: true
@@ -53,13 +52,10 @@ export default class AlbumForm extends React.Component {
                         .split(' ')
                         .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
                         .join(' ');
-                    console.log(next);
                     titles.push(next);
                 }
                 self.setState({
                     albums: titles
-                }, () => {
-                    console.log(self.state.albums);
                 });
             })
             .catch(function (error) {
@@ -75,7 +71,7 @@ export default class AlbumForm extends React.Component {
                      <p>Choose your favorite title for our album.</p>
                      {this.state.albums.map((albumTitle, index) => (
                          <div key={index}>
-                             <button>{albumTitle}</button>
+                             <button onClick={() => this.props.clickTitleBtn(albumTitle)}>{albumTitle}</button>
                          </div>
                      ))}
                  </div>
@@ -88,7 +84,7 @@ export default class AlbumForm extends React.Component {
                         <p>Give me one word to inspire our album's title.</p>
                         <input pattern="/^\S*$/" type="text" name="albumTitle" value={this.state.albumTitle} onChange={this.handleChange} />
                         <div>
-                            <button onClick={this.clickBtn}>Generate Some Titles</button>
+                            <button onClick={this.clickGenerateBtn}>Generate Some Titles</button>
                         </div>
                 </div>}
             </div>

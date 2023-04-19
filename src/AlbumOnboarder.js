@@ -2,16 +2,51 @@ import React, { Component } from 'react';
 import { TypeAnimation } from "react-type-animation";
 import TimedComponent from './TimedComponent';
 import AlbumForm from "./AlbumForm";
+import ImageDisplay from "./ImageDisplay";
+import SongForm from "./SongForm";
 
 export default class AlbumOnboarder extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderView: 3,
+            albumTitle: '',
+            imageSrc: ''
+        }
 
-    state = {
-        renderView: 0,
-        title: ""
+        this.clickImgBtn = this.clickImgBtn.bind(this);
+        this.clickTitleBtn = this.clickTitleBtn.bind(this);
+        this.clickSongBtn = this.clickSongBtn.bind(this);
+
+    }
+    clickTitleBtn(albumTitle) {
+        let self = this;
+
+        self.setState({
+            albumTitle: albumTitle
+        }, () => {
+            console.log("title: " + self.state.albumTitle);
+            self.next();
+        })
     }
 
-    clickBtn = e => {
+    clickImgBtn(imageSrc) {
+        let self = this;
+
+        self.setState({
+            imageSrc: imageSrc
+        }, () => {
+            self.next();
+        })
+
+    }
+
+    clickSongBtn(numSongs) {
+        
+    }
+
+    next = () => {
         this.setState({
             renderView: this.state.renderView += 1
         });
@@ -20,7 +55,7 @@ export default class AlbumOnboarder extends Component {
     render () {
         switch(this.state.renderView) {
             case 1:
-                return <div>
+                return (<div>
                     <br />
                     {/*<TypeAnimation*/}
                     {/*    cursor={false}*/}
@@ -35,17 +70,36 @@ export default class AlbumOnboarder extends Component {
                     <TimedComponent
                         element={
                             <div>
-                                <AlbumForm />
+                                <AlbumForm
+                                    clickTitleBtn={this.clickTitleBtn}
+                                />
                             </div>
                         }
-//                        timeout="16000"
+                        //                        timeout="16000"
                         timeout="0"
                     />
-                </div>      
+                </div>);
+            case 2:
+                return (
+                    <div>
+                        <ImageDisplay
+                            prompt={this.state.albumTitle}
+                            clickImgBtn={this.clickImgBtn}
+                        />
+                    </div>
+                )
+            case 3:
+                return (
+                    <div>
+                        <SongForm
+                            clickSongBtn={this.clickSongBtn}
+                        />
+                    </div>
+                )
             default:
                 return <div>
-                    <p>Generate a hypothetical album using Artificial Intelligence</p>
-                    <button onClick={this.clickBtn}>Get Started</button>
+                    <p>Generate an album using Artificial Intelligence (audio not included)</p>
+                    <button onClick={this.next}>Get Started</button>
                 </div>
         }
     }
