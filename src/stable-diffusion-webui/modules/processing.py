@@ -151,7 +151,7 @@ class SongProcessing:
 
         model = self.build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
 
-        model.load_weights(tf.train.latest_checkpoint("/Users/elijahsorensen/Developer/CS436/cs436-final-project/src/stable-diffusion-webui/models/text/songs_model"))
+        model.load_weights(tf.train.latest_checkpoint(os.path.join(os.path.abspath(os.path.join(__location__, os.pardir)), 'models/text/songs_model')))
 
         model.build(tf.TensorShape([1, None]))
 
