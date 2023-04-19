@@ -4,20 +4,22 @@ import TimedComponent from './TimedComponent';
 import AlbumForm from "./AlbumForm";
 import ImageDisplay from "./ImageDisplay";
 import SongForm from "./SongForm";
+import AlbumDisplay from "./AlbumDisplay";
 
 export default class AlbumOnboarder extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            renderView: 3,
+            renderView: 0,
             albumTitle: '',
-            imageSrc: ''
+            imageSrc: '',
+            songTitles: []
         }
 
         this.clickImgBtn = this.clickImgBtn.bind(this);
         this.clickTitleBtn = this.clickTitleBtn.bind(this);
-        this.clickSongBtn = this.clickSongBtn.bind(this);
+        this.getSongTitles = this.getSongTitles.bind(this);
 
     }
     clickTitleBtn(albumTitle) {
@@ -38,18 +40,25 @@ export default class AlbumOnboarder extends Component {
             imageSrc: imageSrc
         }, () => {
             self.next();
-        })
+        });
 
     }
 
-    clickSongBtn(numSongs) {
-        
+    getSongTitles(titles) {
+        let self = this;
+
+        self.setState({
+            songTitles: titles
+        }, () => {
+            console.log("Titles: " + this.state.songTitles);
+            self.next();
+        });
     }
 
     next = () => {
-        this.setState({
-            renderView: this.state.renderView += 1
-        });
+        this.setState((prevState) => ({
+            renderView: prevState.renderView + 1
+        }));
     }
     
     render () {
@@ -93,6 +102,17 @@ export default class AlbumOnboarder extends Component {
                     <div>
                         <SongForm
                             clickSongBtn={this.clickSongBtn}
+                            getSongTitles={this.getSongTitles}
+                        />
+                    </div>
+                )
+            case 4:
+                return (
+                    <div>
+                        <AlbumDisplay
+                            imageSrc={this.state.imageSrc}
+                            albumTitle={this.state.albumTitle}
+                            songTitles={this.state.songTitles}
                         />
                     </div>
                 )

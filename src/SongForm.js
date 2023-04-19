@@ -10,7 +10,8 @@ export default class SongForm extends React.Component {
             renderView: 0,
             currSong: 0,
             songIdea: "",
-            songIdeas: []
+            songIdeas: [],
+            songTitles: []
         };
         
         this.handleChange = this.handleChange.bind(this);
@@ -39,39 +40,38 @@ export default class SongForm extends React.Component {
             songIdeas: [...self.state.songIdeas, songIdea]
         }, () => {
             console.log(self.state.songIdeas);
+
+            if (self.state.currSong === self.state.x) {
+                console.log("max number of songs reached")
+                this.setState((prevState) => ({
+                    renderView: prevState.renderView + 1
+                }));
+                this.generateSongs();
+            } else {
+                this.setState((prevState) => ({
+                    currSong: prevState.currSong + 1
+                }));
+            }
         });
-        
-        if (self.state.currSong === self.state.x) {
-            console.log("max number of songs reached")
-            this.setState((prevState) => ({
-                renderView: prevState.renderView + 1
-            }));
-            this.generateSongs();
-        } else {
-            this.setState((prevState) => ({
-                currSong: prevState.currSong + 1
-            }));
-        }
     }
     
     generateSongs() {
         const self = this;
-
-        for (let idea in self.state.songIdeas) {
             axios({
                 method: 'post',
                 url: 'http://127.0.0.1:7860/textapi/v1/song',
                 data: {
-                    "input": idea
+                    "input": self.state.songIdeas
                 }
             })
             .then(function (response) {
-                console.log(response);
+//                console.log(response);
+                self.props.getSongTitles(response.data.output);
             })
             .catch(function (error) {
                 console.log(error);
             });
-        }
+
 
     }
     

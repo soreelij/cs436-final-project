@@ -1,5 +1,4 @@
 import './App.css';
-import ImageDisplay from './ImageDisplay.js';
 import React from 'react';
 import AlbumOnboarder from "./AlbumOnboarder";
 
