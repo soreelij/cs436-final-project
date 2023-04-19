@@ -11,3 +11,7 @@ https://github.com/pyenchant/pyenchant/issues/265
 
 **In a separate Terminal..**
 `yarn start` for starting the project
+
+Google Forum link to add to end of us
+**https://docs.google.com/forms/d/e/1FAIpQLSc1Khr9GqDLggXBTbjFDJc4qgkKGTA7pkmgrfUcZ2SvF4i47w/viewform?usp=pp_url**
+

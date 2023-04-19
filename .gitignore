@@ -6,6 +6,10 @@
 *.ckpt
 .DS_Store
 .ipynb_checkpoints
-**/node_modules
+
+# Ignore node_modules and its child directories
+node_modules/
+
 src/stable-diffusion-webui/webui-user.sh
-**/params.txt
+params.txt
+
