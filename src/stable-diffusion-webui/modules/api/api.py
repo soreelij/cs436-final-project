@@ -246,7 +246,6 @@ class Api:
 
         return SongResponse(output=p.return_title(input=p.prompt))
 
-
     def get_album(self, req: AlbumRequest):
         script_runner = scripts.scripts_song
 

@@ -105,8 +105,8 @@ def txt2img_image_conditioning(sd_model, x, width, height):
         return x.new_zeros(x.shape[0], 5, 1, 1, dtype=x.dtype, device=x.device)
 
 class SongProcessing:
-    def __init__(self, prompt: str = ""):
-        self.prompt: str = prompt
+    def __init__(self, prompt: list = []):
+        self.prompt: list = prompt
         self.scripts: None
 
     global vocab_size
@@ -158,7 +158,7 @@ class SongProcessing:
         # Evaluation step (generating text using the learned model)
 
         # Number of characters to generate
-        num_generate = 20
+        num_generate = 40
 
         # Converting our start string to numbers (vectorizing)
         input_eval = [char2idx[s] for s in start_string]
@@ -190,8 +190,14 @@ class SongProcessing:
             text_generated.append(idx2char[predicted_id])
 
         return (start_string + ''.join(text_generated))
+
     def return_title(self, input):
-        return self.generate_text(start_string=input, t=0.4)
+        output = []
+        for start_string in input:
+                text = self.generate_text(start_string=start_string, t=0.4)
+                output.append(text)
+
+        return output
 
 
 class AlbumProcessing:
