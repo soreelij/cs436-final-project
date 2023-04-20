@@ -17,7 +17,7 @@ from secrets import compare_digest
 import modules.shared as shared
 from modules import sd_samplers, deepbooru, sd_hijack, images, scripts, ui, postprocessing
 from modules.api.models import *
-from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img, SongProcessing, process_images, AlbumProcessing
+from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img, SongProcessing, process_images, AlbumProcessing, return_sample_words
 from modules.textual_inversion.textual_inversion import create_embedding, train_embedding
 from modules.textual_inversion.preprocess import preprocess
 from modules.hypernetworks.hypernetwork import create_hypernetwork, train_hypernetwork
@@ -199,6 +199,7 @@ class Api:
         self.add_api_route("/sdapi/v1/scripts", self.get_scripts_list, methods=["GET"], response_model=ScriptsList)
         self.add_api_route("/textapi/v1/song", self.get_song, methods=["POST"], response_model=SongResponse)
         self.add_api_route("/textapi/v1/album", self.get_album, methods=["POST"], response_model=AlbumResponse)
+        self.add_api_route("/textapi/v1/sample", self.get_sample_words, methods=["GET"], response_model=SampleWordsResponse)
 
         self.default_script_arg_txt2img = []
         self.default_script_arg_img2img = []
@@ -255,6 +256,10 @@ class Api:
             p.scripts = script_runner
 
         return AlbumResponse(output=p.return_album_title(phrase=p.prompt))
+
+    def get_sample_words(self):
+        words = return_sample_words()
+        return SampleWordsResponse(output=words)
 
     def init_default_script_args(self, script_runner):
         #find max idx from the scripts in runner and generate a none array to init script_args

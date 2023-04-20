@@ -3,6 +3,7 @@ import math
 import os
 import sys
 import warnings
+import random
 
 import enchant
 import tensorflow as tf
@@ -104,6 +105,15 @@ def txt2img_image_conditioning(sd_model, x, width, height):
         # Still takes up a bit of memory, but no encoder call.
         # Pretty sure we can just make this a 1x1 image since its not going to be used besides its batch size.
         return x.new_zeros(x.shape[0], 5, 1, 1, dtype=x.dtype, device=x.device)
+
+def return_sample_words():
+    __location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+    with open(os.path.join( os.path.abspath(os.path.join(__location__, os.pardir)), 'modules/text/sample_words.txt'), 'r') as file:
+        lines = [line.rstrip() for line in file]
+
+    return random.sample(lines, 5)
 
 class SongProcessing:
     def __init__(self, prompt: list = []):
@@ -242,7 +252,6 @@ class SongProcessing:
                 output.append(text)
 
         return output
-
 
 class AlbumProcessing:
     def __init__(self, prompt: str = ""):
