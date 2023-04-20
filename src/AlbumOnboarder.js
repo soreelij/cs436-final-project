@@ -64,28 +64,10 @@ export default class AlbumOnboarder extends Component {
     render () {
         switch(this.state.renderView) {
             case 1:
-                return (<div>
+                return (<div className="mt-3">
                     <br />
-                    {/*<TypeAnimation*/}
-                    {/*    cursor={false}*/}
-                    {/*    sequence={["Hi, I'm AlgoRhythm.", 600,*/}
-                    {/*               "We can make AI albums together (audio not included).", 750,*/}
-                    {/*               "To start, we need to choose a title.", 800,*/}
-                    {/*               "In one word, what should our album be about?", 1500]}*/}
-                    {/*    wrapper="p"*/}
-                    {/*    className="type"*/}
-                    {/*    deletionSpeed="99"*/}
-                    {/*/>*/}
-                    <TimedComponent
-                        element={
-                            <div>
-                                <AlbumForm
-                                    clickTitleBtn={this.clickTitleBtn}
-                                />
-                            </div>
-                        }
-                        //                        timeout="16000"
-                        timeout="0"
+                    <AlbumForm
+                        clickTitleBtn={this.clickTitleBtn}
                     />
                 </div>);
             case 2:
@@ -94,6 +76,7 @@ export default class AlbumOnboarder extends Component {
                         <ImageDisplay
                             prompt={this.state.albumTitle}
                             clickImgBtn={this.clickImgBtn}
+                            albumTitle={this.state.albumTitle}
                         />
                     </div>
                 )
@@ -120,6 +103,9 @@ export default class AlbumOnboarder extends Component {
                 return <div>
                     <p>Generate an album using Artificial Intelligence (audio not included)</p>
                     <button onClick={this.next}>Get Started</button>
+                    <footer className="mt-lg-5">
+                        <p>A project by Eli Sorensen & Natalie Hahle.</p>
+                    </footer>
                 </div>
         }
     }

@@ -1,6 +1,8 @@
 import React from 'react';
 import Slider from 'react-input-slider';
 import axios from 'axios';
+import { TypeAnimation } from "react-type-animation";
+import TimedComponent from "./TimedComponent";
 
 export default class SongForm extends React.Component {
     constructor(props) {
@@ -37,8 +39,12 @@ export default class SongForm extends React.Component {
         }
         
         this.setState({
-            songIdeas: [...self.state.songIdeas, songIdea]
+            songIdeas: [...self.state.songIdeas, songIdea + " "]
         }, () => {
+            self.setState({
+                songIdea: ""
+            });
+
             console.log(self.state.songIdeas);
 
             if (self.state.currSong === self.state.x) {
@@ -79,17 +85,38 @@ export default class SongForm extends React.Component {
         switch (this.state.renderView) {
             case 1:
                 return (
-                    <div>
-                        <p>Now I'll just need some ideas for song titles.</p>
-                        <p>Give me one word for inpsiration on each song.</p>
-                        <div className="row">
-                            <form>
-                                <label className="me-3">Song {this.state.currSong}</label>
-                                <input pattern="/^\S*$/" name="songIdea" className="mb-3" type="text" value={this.state.songIdea} onChange={this.handleChange}></input>
-                            </form>
+                <div>
+                    <TypeAnimation
+                        cursor={false}
+                        sequence={["Now I'll just need some ideas for song titles.", 600]}
+                        wrapper="p"
+                        className="type"
+                        deletionSpeed="99"
+                    />
+                    <TimedComponent
+                        element={
+                        <div>
+                            <div className="row">
+                                <form>
+                                    <label className="me-3">Song {this.state.currSong + 1}</label>
+                                    <input
+                                        className="input mb-3"
+                                        pattern="/^\S*$/"
+                                        name="songIdea"
+                                        type="text"
+                                        value={this.state.songIdea}
+                                        onChange={this.handleChange}
+                                        placeholder="Type something..."
+                                        >
+                                    </input>
+                                </form>
+                            </div>
+                            <button onClick={this.clickNextSongBtn}>Next Song</button>
                         </div>
-                        <button onClick={this.clickNextSongBtn}>Next Song</button>
-                    </div>
+                        }
+                        timeout="6000"
+                    />
+            </div>
                     );
                 case 2:
                     return (
@@ -100,16 +127,29 @@ export default class SongForm extends React.Component {
                 default:
                     return (
                         <div>
-                            <p>That's a great cover, now we need to make some song titles.</p>
-                            <p>Choose how many songs we should have.</p>
-                            <Slider
-                                axis="x"
-                                x={this.state.x}
-                                xmax="14"
-                                onChange={({ x }) => this.setState(state => ({ ...state, x}))}
+                            <TypeAnimation
+                                cursor={false}
+                                sequence={["That's a great cover, now we need to make some song titles.", 600,
+                                           "Choose how many songs we should have.", 750]}
+                                wrapper="p"
+                                className="type"
+                                deletionSpeed="99"
                             />
-                            <p> {this.state.x + 1}  songs</p>
-                            <button onClick={() => this.setState(state => ({...state, renderView: 1}))}>Generate Songs</button>
+                            <TimedComponent
+                                element={
+                                <div>
+                                    <Slider
+                                        axis="x"
+                                        x={this.state.x}
+                                        xmax="14"
+                                        onChange={({ x }) => this.setState(state => ({ ...state, x}))}
+                                    />
+                                    <p> {this.state.x + 1}  songs</p>
+                                    <button onClick={() => this.setState(state => ({...state, renderView: 1}))}>Generate Songs</button>
+                                </div>
+                                }
+                                timeout="9000"
+                            />
                         </div>
                         );
         }
