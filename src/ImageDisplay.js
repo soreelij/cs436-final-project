@@ -21,7 +21,7 @@ export default class ImageDisplay extends Component {
                 url: 'http://127.0.0.1:7860/sdapi/v1/txt2img',
                 data: {
                     "prompt": "the album cover for " + title,
-                    "steps": 1,
+                    "steps": 20,
                 }
             })
             .then(function (response) {
