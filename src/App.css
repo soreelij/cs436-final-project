@@ -74,6 +74,10 @@ p {
   font-family: 'Inconsolata', 'monospace';
 }
 
+a {
+  font-family: 'Inconsolata', 'monospace';
+}
+
 .neumorph {
   border-radius: 42px;
   background: #ebebeb;

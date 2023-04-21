@@ -3,6 +3,7 @@ import Slider from 'react-input-slider';
 import axios from 'axios';
 import { TypeAnimation } from "react-type-animation";
 import TimedComponent from "./TimedComponent";
+import { Bars } from "react-loader-spinner";
 
 export default class SongForm extends React.Component {
     constructor(props) {
@@ -86,42 +87,42 @@ export default class SongForm extends React.Component {
             case 1:
                 return (
                 <div>
-                    <TypeAnimation
-                        cursor={false}
-                        sequence={["Now I'll just need some ideas for song titles.", 600]}
-                        wrapper="p"
-                        className="type"
-                        deletionSpeed="99"
-                    />
-                    <TimedComponent
-                        element={
-                        <div>
-                            <div className="row">
-                                <form>
-                                    <label className="me-3">Song {this.state.currSong + 1}</label>
-                                    <input
-                                        className="input mb-3"
-                                        pattern="/^\S*$/"
-                                        name="songIdea"
-                                        type="text"
-                                        value={this.state.songIdea}
-                                        onChange={this.handleChange}
-                                        placeholder="Type something..."
-                                        >
-                                    </input>
-                                </form>
-                            </div>
-                            <button onClick={this.clickNextSongBtn}>Next Song</button>
+                    <p>Give me one word for each song title, just like the album title.</p>
+                    <div>
+                        <div className="row">
+                            <form>
+                                <label className="me-3">Song {this.state.currSong + 1}</label>
+                                <input
+                                    className="input mb-3"
+                                    pattern="/^\S*$/"
+                                    name="songIdea"
+                                    type="text"
+                                    value={this.state.songIdea}
+                                    onChange={this.handleChange}
+                                    placeholder="Type something..."
+                                    >
+                                </input>
+                            </form>
                         </div>
-                        }
-                        timeout="6000"
-                    />
+                        <button onClick={this.clickNextSongBtn}>Next Song</button>
+                    </div>
             </div>
                     );
                 case 2:
                     return (
                         <div>
-                            <p>Generating songs...</p>
+                            <Bars
+                                height="50"
+                                width="50"
+                                color="#6270dd"
+                                ariaLabel="bars-loading"
+                                wrapperStyle={{
+                                position: "fixed",
+                                    top: "50%",
+                                    left: "50%",
+                                    transform: "translate(-50%, 300%)"
+                            }}
+                            />
                         </div>
                     );
                 default:

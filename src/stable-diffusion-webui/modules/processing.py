@@ -219,7 +219,7 @@ class SongProcessing:
 
         model.build(tf.TensorShape([1, None]))
 
-        raw_title = self.generate_song_text(start_string=start_string, t=0.1)
+        raw_title = self.generate_song_text(start_string=start_string, t=0.2)
         d = enchant.Dict("en_US")
         title = ""
         for word in raw_title:

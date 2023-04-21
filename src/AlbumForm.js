@@ -26,7 +26,7 @@ export default class AlbumForm extends React.Component {
         this.setState({
             [event.target.name]: event.target.value.trim()
         })
-    }
+    }xf
     
     clickGenerateBtn() {
         const regexp = /^\S*$/; 
@@ -129,13 +129,13 @@ export default class AlbumForm extends React.Component {
                             onChange={this.handleChange}
                             placeholder="Type something..."
                         />
-                        <div>
+                        <div className="mb-4">
                             <button onClick={this.clickGenerateBtn}>Generate Some Titles</button>
                         </div>
-                        <div>
-                            Here are some of my ideas if you need them.
+                        <div className="mb-4">
+                            <p>Here are some of my ideas if you need them.</p>
                             {this.state.sampleWords.map((word, index) => (
-                                <div className="row" key={index}>
+                                <div key={index}>
                                     <button onClick={() => this.clickSampleBtn(word)}>{word}</button>
                                 </div>
                             ))}
@@ -159,7 +159,7 @@ export default class AlbumForm extends React.Component {
                         <Bars
                             height="50"
                             width="50"
-                            color="#4fa94d"
+                            color="#6270dd"
                             ariaLabel="bars-loading"
                             wrapperStyle={{
                             position: "fixed",

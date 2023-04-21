@@ -47,8 +47,18 @@ export default class AlbumOnboarder extends Component {
     getSongTitles(titles) {
         let self = this;
 
+        let capsTitles = []
+
+        for (let i in titles) {
+            const next = titles[i].toLowerCase()
+                        .split(' ')
+                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                        .join(' ');
+            capsTitles.push(next);
+        }
+
         self.setState({
-            songTitles: titles
+            songTitles: capsTitles
         }, () => {
             console.log("Titles: " + this.state.songTitles);
             self.next();
@@ -102,9 +112,11 @@ export default class AlbumOnboarder extends Component {
             default:
                 return <div>
                     <p>Generate an album using Artificial Intelligence (audio not included)</p>
-                    <button onClick={this.next}>Get Started</button>
-                    <footer className="mt-lg-5">
-                        <p>A project by Eli Sorensen & Natalie Hahle.</p>
+                    <a href="https://forms.gle/VPn7um81uko29tXc7">Before proceeding, please follow the directions on the survey.</a>
+                    <br/>
+                    <button className="mt-4" onClick={this.next}>Get Started</button>
+                    <footer className="mt-lg-4">
+                        <p>Made in 2023 by Eli Sorensen & Natalie Hahle.</p>
                     </footer>
                 </div>
         }
