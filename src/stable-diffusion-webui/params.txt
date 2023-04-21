@@ -1,2 +1,2 @@
-the album cover for mormon missionaries
-Steps: 1, Sampler: Euler, CFG scale: 7.0, Seed: 174921868, Size: 512x512, Model hash: 02668ea343, Model: AlbumCoverSession, Seed resize from: -1x-1, Denoising strength: 0
+the album cover for undefined
+Steps: 20, Sampler: Euler, CFG scale: 7.0, Seed: 648176290, Size: 512x512, Model hash: 02668ea343, Model: AlbumCoverSession, Seed resize from: -1x-1, Denoising strength: 0

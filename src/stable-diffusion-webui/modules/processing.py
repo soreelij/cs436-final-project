@@ -3,7 +3,9 @@ import math
 import os
 import sys
 import warnings
+import random
 
+import enchant
 import tensorflow as tf
 import torch
 import numpy as np
@@ -104,6 +106,15 @@ def txt2img_image_conditioning(sd_model, x, width, height):
         # Pretty sure we can just make this a 1x1 image since its not going to be used besides its batch size.
         return x.new_zeros(x.shape[0], 5, 1, 1, dtype=x.dtype, device=x.device)
 
+def return_sample_words():
+    __location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+    with open(os.path.join( os.path.abspath(os.path.join(__location__, os.pardir)), 'modules/text/sample_words.txt'), 'r') as file:
+        lines = [line.rstrip() for line in file]
+
+    return random.sample(lines, 5)
+
 class SongProcessing:
     def __init__(self, prompt: list = []):
         self.prompt: list = prompt
@@ -128,7 +139,7 @@ class SongProcessing:
         ])
         return model
 
-    def generate_text(self, start_string, t):
+    def generate_song_text(self, start_string, t):
 
         __location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -190,15 +201,57 @@ class SongProcessing:
             text_generated.append(idx2char[predicted_id])
 
         return (start_string + ''.join(text_generated))
+    
+    def generate_song_title(self, start_string):
+
+        __location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+        model = self.build_model(
+            vocab_size=476,
+            embedding_dim=100,
+            rnn_units=100,
+            batch_size=10)
+
+        model = self.build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
+
+        model.load_weights(tf.train.latest_checkpoint(os.path.join(os.path.abspath(os.path.join(__location__, os.pardir)), 'models/text/songs_model')))
+
+        model.build(tf.TensorShape([1, None]))
+
+        raw_title = self.generate_song_text(start_string=start_string, t=0.2)
+        d = enchant.Dict("en_US")
+        title = ""
+        for word in raw_title:
+            if d.check(word):
+                title += word
+        if "the" in title.lower():
+            words = title.split(" ")
+            final = []
+            cont = True
+            for word in words:
+                if cont:
+                    if word.lower() == 'the':
+                        cont = False
+                    final.append(word)
+                else:
+                    final.append(word)
+                    break
+            title = " ".join(final)
+        words = title.split(" ")
+        end = len(words) - 1
+        if words[end].lower() == 'the':
+            words.pop(end)
+        title = " ".join(words)
+        return title
 
     def return_title(self, input):
         output = []
-        for start_string in input:
-                text = self.generate_text(start_string=start_string, t=0.4)
+        for start in input:
+                text = self.generate_song_title(start_string=start)
                 output.append(text)
 
         return output
-
 
 class AlbumProcessing:
     def __init__(self, prompt: str = ""):

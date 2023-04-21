@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #ebebeb;
 }
 
 .App-logo {
@@ -14,7 +15,6 @@
 }
 
 .App-header {
-/*  background-color: #282c34;*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -72,4 +72,37 @@ h2 {
 
 p {
   font-family: 'Inconsolata', 'monospace';
+}
+
+a {
+  font-family: 'Inconsolata', 'monospace';
+}
+
+.neumorph {
+  border-radius: 42px;
+  background: #ebebeb;
+  box-shadow:  25px 25px 51px #c8c8c8,
+             -25px -25px 51px #ffffff;
+}
+
+footer {
+  font-size: 0.75em;
+}
+
+label {
+  font-family: 'Inconsolata', 'monospace';
+  font-size: 0.85em;
+}
+
+.input {
+  margin: 30px;
+  background: none;
+  border: none;
+  outline: none;
+  max-width: 190px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 9999px;
+  box-shadow: inset 2px 5px 10px #c8c8c8;
+  color: #000000;
 }
