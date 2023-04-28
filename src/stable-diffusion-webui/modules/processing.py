@@ -106,14 +106,14 @@ def txt2img_image_conditioning(sd_model, x, width, height):
         # Pretty sure we can just make this a 1x1 image since its not going to be used besides its batch size.
         return x.new_zeros(x.shape[0], 5, 1, 1, dtype=x.dtype, device=x.device)
 
-def return_sample_words():
+def return_sample_words(num_samples):
     __location__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
     with open(os.path.join( os.path.abspath(os.path.join(__location__, os.pardir)), 'modules/text/sample_words.txt'), 'r') as file:
         lines = [line.rstrip() for line in file]
 
-    return random.sample(lines, 5)
+    return random.sample(lines, num_samples)
 
 class SongProcessing:
     def __init__(self, prompt: list = []):

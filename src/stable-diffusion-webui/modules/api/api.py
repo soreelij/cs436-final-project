@@ -257,8 +257,8 @@ class Api:
 
         return AlbumResponse(output=p.return_album_title(phrase=p.prompt))
 
-    def get_sample_words(self):
-        words = return_sample_words()
+    def get_sample_words(self, req: SampleWordsRequest):
+        words = return_sample_words(req.input)
         return SampleWordsResponse(output=words)
 
     def init_default_script_args(self, script_runner):
@@ -713,4 +713,4 @@ class Api:
 
     def launch(self, server_name, port):
         self.app.include_router(self.router)
-        uvicorn.run(self.app, host=server_name, port=port)
+        uvicorn.run(self.app, host='0.0.0.0', port=8000)
