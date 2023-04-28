@@ -112,8 +112,6 @@ export default class AlbumOnboarder extends Component {
             default:
                 return <div>
                     <p>Generate an album using Artificial Intelligence (audio not included)</p>
-                    <a href="https://forms.gle/VPn7um81uko29tXc7">Before proceeding, please follow the directions on the survey.</a>
-                    <br/>
                     <button className="mt-4" onClick={this.next}>Get Started</button>
                     <footer className="mt-lg-4">
                         <p>Made in 2023 by Eli Sorensen & Natalie Hahle.</p>

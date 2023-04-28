@@ -41,7 +41,6 @@ export default class AlbumDisplay extends React.Component {
                                 <p>{index + 1}. {songTitle}</p>
                             </div>
                             ))}
-                        <a href="https://forms.gle/VPn7um81uko29tXc7">Take our survey!</a>
                     </div>
                     );
             default:

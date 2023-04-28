@@ -188,7 +188,7 @@ def initialize():
 
 def setup_middleware(app):
     origins = ["http://192.168.0.164:3000",
-               "http://96.19.204.182:3000"]
+               "localhost:3000"]
     app.middleware_stack = None # reset current middleware to allow modifying user provided list
     # app.add_middleware(GZipMiddleware, minimum_size=1000)
     app.add_middleware(
