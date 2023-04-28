@@ -43,9 +43,9 @@ c. After required project dependencies have installed, use the command `yarn sta
 
 ## Credits
 
-This projcet utilizes AUTOMATIC1111's [Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) as the basis for its Fast API back end. The license for this project is located within this directory.
+This projcet utilizes AUTOMATIC1111's [Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) as the basis for its Fast API back end.
 
-Modifications to this project are the addition of two new endpoints and their subsequent sattelite methods within this project directory located at `src\stable-diffusion-webui\`.
+Modifications to this project are the addition of two new endpoints and their subsequent sattelite methods within this project directory located at `src\stable-diffusion-webui\`. The license for this project is also located within this directory.
 
 
 
