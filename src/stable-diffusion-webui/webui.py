@@ -187,15 +187,23 @@ def initialize():
 
 
 def setup_middleware(app):
+    origins = ["http://192.168.0.164:3000",
+               "http://96.19.204.182:3000"]
     app.middleware_stack = None # reset current middleware to allow modifying user provided list
-    app.add_middleware(GZipMiddleware, minimum_size=1000)
-    if cmd_opts.cors_allow_origins and cmd_opts.cors_allow_origins_regex:
-        app.add_middleware(CORSMiddleware, allow_origins=cmd_opts.cors_allow_origins.split(','), allow_origin_regex=cmd_opts.cors_allow_origins_regex, allow_methods=['*'], allow_credentials=True, allow_headers=['*'])
-    elif cmd_opts.cors_allow_origins:
-        app.add_middleware(CORSMiddleware, allow_origins=cmd_opts.cors_allow_origins.split(','), allow_methods=['*'], allow_credentials=True, allow_headers=['*'])
-    elif cmd_opts.cors_allow_origins_regex:
-        app.add_middleware(CORSMiddleware, allow_origin_regex=cmd_opts.cors_allow_origins_regex, allow_methods=['*'], allow_credentials=True, allow_headers=['*'])
-    app.build_middleware_stack() # rebuild middleware stack on-the-fly
+    # app.add_middleware(GZipMiddleware, minimum_size=1000)
+    app.add_middleware(
+        CORSMiddleware, 
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"])
+    # if cmd_opts.cors_allow_origins and cmd_opts.cors_allow_origins_regex:
+    #     app.add_middleware(CORSMiddleware, allow_origins=cmd_opts.cors_allow_origins.split(','), allow_origin_regex=cmd_opts.cors_allow_origins_regex, allow_methods=['*'], allow_credentials=True, allow_headers=['*'])
+    # elif cmd_opts.cors_allow_origins:
+    #     app.add_middleware(CORSMiddleware, allow_origins=cmd_opts.cors_allow_origins.split(','), allow_methods=['*'], allow_credentials=True, allow_headers=['*'])
+    # elif cmd_opts.cors_allow_origins_regex:
+    #     app.add_middleware(CORSMiddleware, allow_origin_regex=cmd_opts.cors_allow_origins_regex, allow_methods=['*'], allow_credentials=True, allow_headers=['*'])
+    # app.build_middleware_stack() # rebuild middleware stack on-the-fly
 
 
 def create_api(app):
@@ -219,8 +227,9 @@ def api_only():
     initialize()
 
     app = FastAPI()
-    setup_middleware(app)
+
     api = create_api(app)
+    setup_middleware(app)
 
     modules.script_callbacks.app_started_callback(None, app)
 
