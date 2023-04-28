@@ -47,5 +47,7 @@ This projcet utilizes AUTOMATIC1111's [Stable Diffusion web UI](https://github.c
 
 Modifications to this project are the addition of two new endpoints and their subsequent sattelite methods within this project directory located at `src\stable-diffusion-webui\`. The license for this project is also located within this directory.
 
+* [Fast Stable Diffusion Dreambooth fine tuning by TheLastBen](https://github.com/TheLastBen/fast-stable-diffusion)
 
+* [Generating Scientific Papers Titles Using Machine Learning](https://towardsdatascience.com/generating-scientific-papers-titles-using-machine-learning-98c8c9bc637e)
 
