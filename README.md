@@ -14,7 +14,7 @@ A web application that generates conceptual album titles, covers, and track list
 ## Installation and running
 
 ### Before you begin:
-Download the checkpoint file for the fine-tuned stable diffusion model and place it in the following sub-directory of the project: `src\stable-diffusion-webui\models\Stable-diffusion`.
+[Download the checkpoint file](https://drive.google.com/file/d/1-3xTe0AJgS9BYKKvju528WFS4Le4sZrk/view?usp=share_link) for the fine-tuned stable diffusion model and place it in the following sub-directory of the project: `src\stable-diffusion-webui\models\Stable-diffusion`.
 
 ### 1. Running the back end
 
